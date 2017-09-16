@@ -42163,7 +42163,7 @@ exports = module.exports = __webpack_require__(43)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -42533,6 +42533,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -42549,9 +42552,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/team/list/' + this.teamId).then(function (response) {
       _this.members = response.data;
     });
+    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/user/starred').then(function (response) {
+      _this.starred_ids = response.data;
+    });
   },
 
-  methods: {},
+  methods: {
+    is_starred: function is_starred(member) {
+      return this.starred_ids.findIndex(function (x) {
+        return x === member.id;
+      }) !== -1;
+    },
+    toggleStar: function toggleStar(member) {}
+  },
   props: ['teamId']
 });
 
@@ -42563,7 +42576,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', [_c('table', {
     staticClass: "table table-striped"
   }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.members), function(member) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(member.name))]), _vm._v(" "), _c('td')])
+    return _c('tr', [_c('td', [_vm._v(_vm._s(member.name))]), _vm._v(" "), _c('td', [(!_vm.is_starred(member)) ? _c('a', {
+      staticClass: "btn btn-primary",
+      on: {
+        "click": function($event) {
+          _vm.toggleStar(member)
+        }
+      }
+    }, [_vm._v("Star")]) : _vm._e(), _vm._v(" "), (_vm.is_starred(member)) ? _c('a', {
+      staticClass: "btn btn-default",
+      on: {
+        "click": function($event) {
+          _vm.toggleStar(member)
+        }
+      }
+    }, [_vm._v("Un-Star")]) : _vm._e()])])
   }))])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Star")])])])
