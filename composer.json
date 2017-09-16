@@ -7,9 +7,11 @@
     "require": {
         "php": ">=7.0.0",
         "barryvdh/laravel-ide-helper": "^2.4",
+        "doctrine/dbal": "^2.6",
         "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
-        "laravel/tinker": "~1.0"
+        "laravel/tinker": "~1.0",
+        "skyronic/laravel-file-generator": "^0.1.6"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
