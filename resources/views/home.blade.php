@@ -15,6 +15,13 @@
                     @endif
 
                     You are logged in!
+                    <ul>
+                        @foreach($teams as $team)
+                            <li>
+                                {{ $team->name }}
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         </div>
