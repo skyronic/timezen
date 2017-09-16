@@ -22,4 +22,5 @@ Route::get('/team/{team}', 'TeamController@view')->name('team_view');
 Route::get('/team/list/{team}', 'TeamController@listMembers');
 
 Route::get('/user/starred', 'UserController@starred');
+Route::post('/user/toggle/{target}', 'UserController@toggleStar');
 

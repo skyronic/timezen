@@ -47,7 +47,10 @@
         return this.starred_ids.findIndex(x => x === member.id) !== -1;
       },
       toggleStar(member) {
-
+        axios.post(`/user/toggle/${member.id}`)
+          .then((response) => {
+            this.starred_ids = response.data;
+          })
       }
     },
     props: [

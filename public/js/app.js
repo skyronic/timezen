@@ -42163,7 +42163,7 @@ exports = module.exports = __webpack_require__(43)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -42563,7 +42563,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return x === member.id;
       }) !== -1;
     },
-    toggleStar: function toggleStar(member) {}
+    toggleStar: function toggleStar(member) {
+      var _this2 = this;
+
+      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/user/toggle/' + member.id).then(function (response) {
+        _this2.starred_ids = response.data;
+      });
+    }
   },
   props: ['teamId']
 });
