@@ -164,6 +164,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+        Skyronic\FileGenerator\FileGeneratorServiceProvider::class,
         /*
          * Package Service Providers...
          */
