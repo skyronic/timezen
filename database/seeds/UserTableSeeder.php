@@ -16,6 +16,7 @@ class UserTableSeeder extends Seeder
             'email' => 'john@example.org',
             'password' => Hash::make('woodfish')
         ]);
+        $user1->save ();
 
         $team1 = new App\Team([
             'name' => "A-Team",
@@ -31,8 +32,8 @@ class UserTableSeeder extends Seeder
         $user1->teams()->attach($team1);
         $user1->teams()->attach($team2);
 
-        $team1->users()->saveMany(factory(\App\User::class, 10)->create());
-        $team2->users()->saveMany(factory(\App\User::class, 10)->create());
+        $team1->users()->saveMany(factory(\App\User::class, 10)->make());
+        $team2->users()->saveMany(factory(\App\User::class, 10)->make());
 
     }
 }
