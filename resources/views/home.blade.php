@@ -22,6 +22,15 @@
                             </li>
                         @endforeach
                     </ul>
+
+
+                        <ul>
+                            @foreach($starred as $user)
+                                <li>
+                                    {{ $user->name }}
+                                </li>
+                            @endforeach
+                        </ul>
                 </div>
             </div>
         </div>

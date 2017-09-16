@@ -32,8 +32,15 @@ class UserTableSeeder extends Seeder
         $user1->teams()->attach($team1);
         $user1->teams()->attach($team2);
 
-        $team1->users()->saveMany(factory(\App\User::class, 10)->make());
-        $team2->users()->saveMany(factory(\App\User::class, 10)->make());
+        $t1coll = factory(\App\User::class, 10)->make();
+        $t2coll = factory(\App\User::class, 10)->make();
+
+        $team1->users()->saveMany($t1coll);
+        $team2->users()->saveMany($t2coll);
+
+        // star a few from team1
+        $user1->starred()->saveMany($t1coll->random(3));
+        $user1->starred()->saveMany($t2coll->random(3));
 
     }
 }
