@@ -19,3 +19,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/team/{team}', 'TeamController@view')->name('team_view');
+Route::get('/team/list/{team}', 'TeamController@listMembers');

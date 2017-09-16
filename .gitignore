@@ -12,4 +12,7 @@ yarn-error.log
 .env
 _ide_helper.php
 _ide_helper_models.php
-
+/public/fonts
+/public/css
+/public/js
+public/mix-manifest.json

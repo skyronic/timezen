@@ -16,4 +16,10 @@ class TeamController extends Controller
             'team' => $team
         ]);
     }
+
+    public function listMembers(Team $team, Request $request) {
+        $this->authorize('view', $team);
+
+        return $team->users;
+    }
 }
