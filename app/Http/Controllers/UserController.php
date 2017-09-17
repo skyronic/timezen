@@ -30,4 +30,9 @@ class UserController extends Controller
 
         return $user->starred->pluck('id');
     }
+
+    public function allUsers (Request $request) {
+        $user = $request->user();
+        return $user->starred;
+    }
 }

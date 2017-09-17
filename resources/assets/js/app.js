@@ -17,6 +17,7 @@ window.Vue = require('vue');
 
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('team-list', require('./components/TeamList.vue'));
+Vue.component('starred-list', require('./components/StarredList.vue'));
 
 const app = new Vue({
     el: '#app'
