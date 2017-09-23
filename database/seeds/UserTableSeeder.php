@@ -29,6 +29,9 @@ class UserTableSeeder extends Seeder
         ]);
         $team2->save ();
 
+        $team1->addAdmin ($user1);
+        $team2->addAdmin ($user1);
+
         $user1->teams()->attach($team1);
         $user1->teams()->attach($team2);
 

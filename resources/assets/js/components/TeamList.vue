@@ -54,7 +54,8 @@
       }
     },
     props: [
-      'teamId'
+      'teamId',
+      'isAdmin'
     ]
   };
 </script>

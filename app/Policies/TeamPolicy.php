@@ -22,6 +22,11 @@ class TeamPolicy
         return $user->teams()->where('team_id', $team->id)->exists();
     }
 
+    public function admin(User $user, Team $team)
+    {
+        return $team->admins()->where('user_id', $user->id)->exists();
+    }
+
     /**
      * Determine whether the user can create teams.
      *

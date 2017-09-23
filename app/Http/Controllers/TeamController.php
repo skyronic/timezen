@@ -14,9 +14,12 @@ class TeamController extends Controller
         $user = $request->user();
         $this->authorize('view', $team);
 
+        $admins = $team->admins;
+
 
         return view('teams.view', [
-            'team' => $team
+            'team' => $team,
+            'admins' => $admins
         ]);
     }
 
