@@ -6,7 +6,6 @@
     <div class="cell-label">
       <div class="label-container" :style="labelStyle">
         {{ labelTime }}
-
       </div>
     </div>
     <div class="zone-range">

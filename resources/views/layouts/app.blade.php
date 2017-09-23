@@ -36,6 +36,7 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
+                      <li><a href="{{ route('add_team') }}">Add Team</a></li>
                         &nbsp;
                     </ul>
 

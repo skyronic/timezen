@@ -18,6 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/team/add', 'TeamController@addTeamPage')->name('add_team');
+Route::post('/team/add', 'TeamController@addTeam');
 Route::get('/team/{team}', 'TeamController@view')->name('team_view');
 Route::get('/team/list/{team}', 'TeamController@listMembers');
 
