@@ -14,6 +14,8 @@
         <td>
           <a class="btn btn-primary" v-if="!is_starred(member)" @click="toggleStar(member)">Star</a>
           <a class="btn btn-default" v-if="is_starred(member)" @click="toggleStar(member)">Un-Star</a>
+          <a class="btn" v-if="isAdmin && !member_admin(member)" @click="toggleAdmin(member)">Make Admin</a>
+          <a class="btn" v-if="isAdmin && member_admin(member)" @click="toggleAdmin(member)">Remove Admin</a>
         </td>
       </tr>
       </tbody>
@@ -29,7 +31,8 @@
     data () {
       return {
         members: [],
-        starred_ids: []
+        starred_ids: [],
+        admin_ids: []
       }
     },
     mounted() {
@@ -41,15 +44,30 @@
         .then((response) => {
           this.starred_ids = response.data;
         })
+      axios.get(`/team/${this.teamId}/admin_ids`)
+        .then((response) => {
+          this.admin_ids = response.data;
+        })
     },
     methods: {
       is_starred(member) {
         return this.starred_ids.findIndex(x => x === member.id) !== -1;
       },
+      member_admin(member) {
+        return this.admin_ids.findIndex(x => x === member.id) !== -1;
+      },
       toggleStar(member) {
         axios.post(`/user/toggle/${member.id}`)
           .then((response) => {
             this.starred_ids = response.data;
+          })
+      },
+      toggleAdmin (member) {
+        axios.post(`/team/${this.teamId}/toggle_admin`, {
+            user_id: member.id
+          })
+          .then((response) => {
+            this.admin_ids = response.data;
           })
       }
     },

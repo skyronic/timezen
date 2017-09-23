@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Forms\AddTeamForm;
 use App\Team;
+use App\User;
 use Illuminate\Http\Request;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 
@@ -27,6 +28,35 @@ class TeamController extends Controller
         $this->authorize('view', $team);
 
         return $team->users;
+    }
+
+    public function adminIds(Team $team, Request $request) {
+        $this->authorize('admin', $team);
+
+        return $team->admins->pluck('id');
+    }
+
+    /**
+     * @param Team $team
+     * @param Request $request
+     * @return \Illuminate\Support\Collection
+     */
+    public function toggleAdmin (Team $team, Request $request) {
+        $this->authorize('admin', $team);
+
+        $user_id = $request->get('user_id');
+        /** @var User $user */
+        $user = User::findOrFail($user_id);
+
+        if($user->can('view', $team)) {
+            $team->toggleAdmin ($user);
+        }
+        else {
+            abort(500);
+        }
+
+
+        return $team->admins->pluck('id');
     }
 
     public function addTeamPage () {

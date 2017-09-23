@@ -20,6 +20,14 @@ class Team extends Model
         $this->admins()->attach($user);
     }
 
+    /**
+     * @param $user User
+     */
+    public function toggleAdmin ($user) {
+        $this->admins()->toggle([$user->id]);
+        $this->save();
+    }
+
     public function addUser (User $user) {
         $this->users()->attach($user);
     }
