@@ -80,7 +80,16 @@ class TeamController extends Controller
 
         $form->redirectIfNotValid();
 
-//        Post::create($form->getFieldValues());
-        return redirect('/home');
+        $team = new Team([
+            'name' => $request->get('name'),
+            'join_token' => str_random(6)
+        ]);
+        $team->save();
+
+        $team->addUser ($request->user());
+        $team->addAdmin ($request->user());
+        $team->save ();
+
+        return redirect()->route('team_view', $team);
     }
 }

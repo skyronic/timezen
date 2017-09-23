@@ -30,5 +30,6 @@ class Team extends Model
 
     public function addUser (User $user) {
         $this->users()->attach($user);
+        $this->save();
     }
 }
