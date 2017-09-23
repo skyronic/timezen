@@ -30,3 +30,6 @@ Route::get('/user/starred', 'UserController@starred');
 Route::get('/user/starred_users', 'UserController@allUsers');
 Route::post('/user/toggle/{target}', 'UserController@toggleStar');
 
+Route::get('/user/profile', 'UserController@profilePage')->name('profile_page');
+Route::post('/user/profile', 'UserController@updateProfile');
+

@@ -37,6 +37,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                       <li><a href="{{ route('add_team') }}">Add Team</a></li>
+                      <li><a href="{{ route('profile_page') }}">Profile</a></li>
                         &nbsp;
                     </ul>
 

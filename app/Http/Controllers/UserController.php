@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Forms\UserProfileForm;
 use App\User;
 use Illuminate\Http\Request;
+use Kris\LaravelFormBuilder\FormBuilderTrait;
 
 class UserController extends Controller
 {
+    use FormBuilderTrait;
+
     public function starred (Request $request) {
         $user = $request->user();
         return $user->starred->pluck('id');
@@ -34,5 +38,22 @@ class UserController extends Controller
     public function allUsers (Request $request) {
         $user = $request->user();
         return $user->starred;
+    }
+
+    public function profilePage (Request $request) {
+        $user = $request->user();
+
+        $form = $this->form(UserProfileForm::class, [
+            'method' => 'POST',
+            'action' => 'UserController@updateProfile'
+        ]);
+
+        return view('user.profile', [
+            'profileForm' => $form
+        ]);
+    }
+
+    public function updateProfile () {
+
     }
 }
