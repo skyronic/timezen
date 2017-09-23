@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Forms\UserProfileForm;
+use App\Team;
 use App\User;
 use Illuminate\Http\Request;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
@@ -41,19 +42,37 @@ class UserController extends Controller
     }
 
     public function profilePage (Request $request) {
+        /** @var User $user */
         $user = $request->user();
 
         $form = $this->form(UserProfileForm::class, [
             'method' => 'POST',
-            'action' => 'UserController@updateProfile'
+            'action' => 'UserController@updateProfile',
+            'model' => $user->toArray()
         ]);
+
 
         return view('user.profile', [
             'profileForm' => $form
         ]);
     }
 
-    public function updateProfile () {
+    public function updateProfile (Request $request) {
+
+        $form = $this->form(UserProfileForm::class);
+
+        if (!$form->isValid()) {
+            return redirect()->back()->withErrors($form->getErrors())->withInput();
+        }
+
+        /** @var User $user */
+        $user = $request->user();
+        $user->update($request->all());
+        $user->save ();
+
+        $form->redirectIfNotValid();
+
+        return redirect()->action("UserController@profilePage");
 
     }
 }

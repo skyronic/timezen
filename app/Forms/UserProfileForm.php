@@ -11,6 +11,7 @@ class UserProfileForm extends Form
         $this
             ->add('name', 'text', [
                 'rules' =>'required|min:5'
-            ]);
+            ])
+            ->add('submit', 'submit', ['label' => 'Save']);
     }
 }
