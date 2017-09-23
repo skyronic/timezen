@@ -4,7 +4,7 @@
       {{ name }} - {{ difference }} [{{ timezone }}]
     </div>
     <div class="cell-label">
-      <div class="label-container">
+      <div class="label-container" :style="labelStyle">
         {{ labelTime }}
 
       </div>
@@ -68,6 +68,24 @@
           return activeCell.ts.format("h:mm A");
         }
         return "";
+      },
+
+      labelStyle () {
+        if(this.activeCell < 3) {
+          return {
+            marginLeft: ((100 / 46) * this.activeCell) + "%"
+          }
+        }
+        if(this.activeCell > 44) {
+          return {
+            marginLeft: ((100 / 46) * 42) + "%"
+          }
+        }
+        else {
+          return {
+            marginLeft: ((100 / 46) * this.activeCell - 4) + "%"
+          }
+        }
       },
 
       difference () {
