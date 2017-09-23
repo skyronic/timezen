@@ -68,9 +68,12 @@ class UserController extends Controller
         /** @var User $user */
         $user = $request->user();
         $user->update($request->all());
+        $user->profile_saved = true;
         $user->save ();
 
         $form->redirectIfNotValid();
+
+        \Session::flash('success', "Profile Saved!");
 
         return redirect()->action("UserController@profilePage");
 

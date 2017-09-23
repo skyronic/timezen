@@ -16,6 +16,7 @@ class UserTableSeeder extends Seeder
             'email' => 'john@example.org',
             'password' => Hash::make('woodfish')
         ]);
+        $user1->profile_saved = true;
         $user1->save ();
 
         $team1 = new App\Team([

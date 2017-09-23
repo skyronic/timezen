@@ -27,6 +27,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $casts = [
+        'profile_saved' => 'boolean'
+    ];
+
     public function teams() {
         return $this->belongsToMany(Team::class);
     }

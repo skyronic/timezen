@@ -17,18 +17,20 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/team/add', 'TeamController@addTeamPage')->name('add_team');
-Route::post('/team/add', 'TeamController@addTeam');
-Route::get('/team/{team}', 'TeamController@view')->name('team_view');
-Route::get('/team/{team}/admin_ids', 'TeamController@adminIds');
-Route::post('/team/{team}/toggle_admin', 'TeamController@toggleAdmin');
+Route::middleware(['check_profile'])->group(function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/team/add', 'TeamController@addTeamPage')->name('add_team');
+    Route::post('/team/add', 'TeamController@addTeam');
+    Route::get('/team/{team}', 'TeamController@view')->name('team_view');
+    Route::get('/team/{team}/admin_ids', 'TeamController@adminIds');
+    Route::post('/team/{team}/toggle_admin', 'TeamController@toggleAdmin');
 
-Route::get('/team/list/{team}', 'TeamController@listMembers');
+    Route::get('/team/list/{team}', 'TeamController@listMembers');
 
-Route::get('/user/starred', 'UserController@starred');
-Route::get('/user/starred_users', 'UserController@allUsers');
-Route::post('/user/toggle/{target}', 'UserController@toggleStar');
+    Route::get('/user/starred', 'UserController@starred');
+    Route::get('/user/starred_users', 'UserController@allUsers');
+    Route::post('/user/toggle/{target}', 'UserController@toggleStar');
+});
 
 Route::get('/user/profile', 'UserController@profilePage')->name('profile_page');
 Route::post('/user/profile', 'UserController@updateProfile');
