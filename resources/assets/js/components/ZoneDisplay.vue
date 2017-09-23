@@ -3,9 +3,15 @@
     <div>
       {{ name }} - {{ difference }} [{{ timezone }}]
     </div>
-    <div class="zone-range">
-      <div v-for="cell in zoneCells" class="zone-cell">
+    <div class="cell-label">
+      <div class="label-container">
+        {{ labelTime }}
 
+      </div>
+    </div>
+    <div class="zone-range">
+      <div v-for="cell in zoneCells" class="zone-cell" @mouseover="onMouseOverCell(cell)"
+           :class="cell.index === activeCell ? 'highlighted-cell' : ''">
       </div>
     </div>
     <div class="zone-range">
@@ -17,6 +23,7 @@
 </template>
 
 <script>
+  import { mapActions, mapGetters, mapState } from 'vuex'
   import _ from 'lodash';
   import moment from 'moment-timezone';
   export default {
@@ -32,19 +39,36 @@
         return {
           time: ts.tz(this.timezone).format("hA")
         }
-      })
+      });
 
       this.zoneCells = _.map(_.range(0, 48), (v) => {
-        let ts = moment().hour(v * 2).minute(0);
+        let ts = moment().hour(0).minute(0).add(v*30, 'minutes').tz(this.timezone);
+
         return {
-          time: ts.tz(this.timezone).format("hA")
+          index: v,
+          ts
         }
       })
     },
-    methods: {
+    methods: Object.assign(mapActions([
+      'setHighlightedCell'
 
-    },
-    computed: {
+    ]), {
+      onMouseOverCell (cell) {
+        this.setHighlightedCell(cell.index);
+      }
+
+    }),
+    computed: Object.assign(mapState({
+      activeCell: state => state.zoneui.highlightedCell
+    }), {
+      labelTime () {
+        let activeCell = this.zoneCells[this.activeCell];
+        if(activeCell && activeCell.ts) {
+          return activeCell.ts.format("h:mm A");
+        }
+        return "";
+      },
 
       difference () {
         let localOffset = moment.tz.zone(this.userTz).offset(moment.now());
@@ -66,7 +90,7 @@
 
         return `${diff_hours} hrs ${direction}`;
       }
-    },
+    }),
     props: [
       'name',
       'timezone',
@@ -78,7 +102,7 @@
 <style lang="css">
   .zone-display {
     border: 1px solid gray;
-    height: 80px;
+    height: 100px;
     width: 100%;
     margin-bottom: 15px;
     padding: 5px;
@@ -97,7 +121,10 @@
   .zone-range {
     display: flex;
     margin-top: 3px;
+  }
 
+  .highlighted-cell {
+    background-color: blue;
   }
 
 </style>

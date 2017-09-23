@@ -35,13 +35,13 @@ const mutations = {
 };
 
 @if($module)
-export {
+export default {
   state,
   actions,
   mutations
 };
 @else
-export new Vuex.Store({
+export default new Vuex.Store({
   state,
   actions,
   mutations

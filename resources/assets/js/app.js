@@ -6,6 +6,7 @@
  */
 
 require('./bootstrap');
+import store from './store/index'
 
 window.Vue = require('vue');
 
@@ -20,5 +21,6 @@ Vue.component('team-list', require('./components/TeamList.vue'));
 Vue.component('starred-list', require('./components/StarredList.vue'));
 
 const app = new Vue({
-    el: '#app'
+  el: '#app',
+  store
 });
