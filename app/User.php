@@ -38,4 +38,9 @@ class User extends Authenticatable
     public function starred () {
         return $this->belongsToMany(User::class, 'stars', 'user_id', 'target_id');
     }
+
+    public function custom () {
+        return $this->hasMany(CustomTracker::class);
+    }
+
 }

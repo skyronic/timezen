@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CustomTracker;
 use App\Forms\UserProfileForm;
 use App\Team;
 use App\User;
@@ -41,6 +42,11 @@ class UserController extends Controller
         return $user->starred;
     }
 
+    public function customItems (Request $request) {
+        $user = $request->user ();
+        return $user->custom;
+    }
+
     public function profilePage (Request $request) {
         /** @var User $user */
         $user = $request->user();
@@ -77,5 +83,33 @@ class UserController extends Controller
 
         return redirect()->action("UserController@profilePage");
 
+    }
+
+    public function addCustomPage (Request $request) {
+        $form = $this->form(UserProfileForm::class, [
+            'method' => 'POST',
+            'action' => 'UserController@addCustom'
+        ]);
+
+        return view('user.custom', [
+            'form' => $form
+        ]);
+    }
+
+    public function addCustom (Request $request) {
+        $form = $this->form(UserProfileForm::class);
+
+        if (!$form->isValid()) {
+            return redirect()->back()->withErrors($form->getErrors())->withInput();
+        }
+
+        /** @var User $user */
+        $user = $request->user();
+        $custom = new CustomTracker($request->all());
+        $user->custom()->save($custom);
+
+        \Session::flash('success', "Added custom item!");
+
+        return redirect()->route("home");
     }
 }

@@ -10,6 +10,9 @@
                 <div class="panel-body">
                     <starred-list></starred-list>
 
+                  <div>
+                    <a href="{{ route('add_custom') }}" class="btn">Add Custom</a>
+                  </div>
                     <ul>
                         @foreach($teams as $team)
                             <li>

@@ -32,7 +32,8 @@ class UserProfileForm extends Form
 
         return $this->add($key, 'select', [
             'choices' => $choices,
-            'empty_value' => 'Select'
+            'empty_value' => 'Select',
+            'rules' => 'required'
         ]);
     }
 
@@ -45,7 +46,8 @@ class UserProfileForm extends Form
 
         return $this->add($key, 'select', [
             'choices' => $choices,
-            'empty_value' => 'Select'
+            'empty_value' => 'Select',
+            'rules' => 'required'
         ]);
     }
 }

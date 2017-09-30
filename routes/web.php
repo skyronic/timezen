@@ -27,6 +27,9 @@ Route::middleware(['check_profile'])->group(function () {
 
     Route::get('/team/list/{team}', 'TeamController@listMembers');
 
+    Route::get('/user/custom', 'UserController@addCustomPage')->name('add_custom');
+    Route::post('/user/custom', 'UserController@addCustom');
+
     Route::get('/user/starred', 'UserController@starred');
     Route::get('/user/starred_users', 'UserController@allUsers');
     Route::post('/user/toggle/{target}', 'UserController@toggleStar');
