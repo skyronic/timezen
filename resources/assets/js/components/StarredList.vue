@@ -6,6 +6,9 @@
     <div v-for="member in starred">
       <zone-display :name="member.name" :timezone="member.timezone" :user-tz="userTz"></zone-display>
     </div>
+    <div v-for="item in customList">
+      <zone-display :name="item.name" :timezone="item.timezone" :user-tz="userTz"></zone-display>
+    </div>
   </div>
 </template>
 
@@ -20,6 +23,7 @@
     data () {
       return {
         starred: [],
+        customList: [],
         userTz: "UTC"
       }
     },
@@ -29,6 +33,10 @@
       axios.get(`/user/starred_users`)
         .then((response) => {
           this.starred = response.data;
+        })
+      axios.get(`/user/custom_items`)
+        .then((response) => {
+          this.customList = response.data;
         })
     },
     methods: {
