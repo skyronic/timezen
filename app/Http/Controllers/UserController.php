@@ -95,7 +95,14 @@ class UserController extends Controller
     }
 
     public function removeCustom ($id, Request $request) {
+        $user = $request->user();
+        /** @var CustomTracker $custom */
+        $custom = $user->custom()->findOrFail($id);
+        $custom->delete();
 
+        return [
+            'success' => true
+        ];
     }
 
     public function addCustomPage (Request $request) {
