@@ -46,5 +46,7 @@ class UserTableSeeder extends Seeder
         $user1->starred()->saveMany($t1coll->random(3));
         $user1->starred()->saveMany($t2coll->random(3));
 
+        $user1->custom()->saveMany(factory(\App\CustomTracker::class, 10)->make());
+
     }
 }
