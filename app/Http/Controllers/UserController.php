@@ -85,6 +85,19 @@ class UserController extends Controller
 
     }
 
+    public function removeStarred ($id, Request $request) {
+        $user = $request->user();
+        $user->starred()->detach([$id]);
+
+        return [
+            'success' => true
+        ];
+    }
+
+    public function removeCustom ($id, Request $request) {
+
+    }
+
     public function addCustomPage (Request $request) {
         $form = $this->form(UserProfileForm::class, [
             'method' => 'POST',

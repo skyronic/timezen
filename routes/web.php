@@ -30,6 +30,8 @@ Route::middleware(['check_profile'])->group(function () {
     Route::get('/user/custom', 'UserController@addCustomPage')->name('add_custom');
     Route::get('/user/custom_items', 'UserController@customItems');
     Route::post('/user/custom', 'UserController@addCustom');
+    Route::post('/user/remove_starred/{id}', 'UserController@removeStarred');
+    Route::post('/user/remove_custom/{id}', 'UserController@removeCustom');
 
     Route::get('/user/starred', 'UserController@starred');
     Route::get('/user/starred_users', 'UserController@allUsers');

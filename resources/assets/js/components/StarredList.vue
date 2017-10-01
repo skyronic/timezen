@@ -4,7 +4,7 @@
       <zone-display name="You!" :timezone="userTz" :user-tz="userTz"></zone-display>
     </div>
     <div v-for="member in starred">
-      <zone-display :name="member.name" :timezone="member.timezone" :user-tz="userTz"></zone-display>
+      <zone-display :name="member.name" :timezone="member.timezone" :user-tz="userTz" @delete="removeMember(member)"></zone-display>
     </div>
     <div v-for="item in customList">
       <zone-display :name="item.name" :timezone="item.timezone" :user-tz="userTz"></zone-display>
@@ -40,7 +40,13 @@
         })
     },
     methods: {
-
+      removeMember(member) {
+        console.log("Removing ", member);
+        axios.post(`/user/remove_starred/${member.id}`)
+          .then((response) => {
+            this.starred = this.starred.filter(x => x.id !== member.id);
+          })
+      }
     },
     props: [
 

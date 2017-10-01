@@ -7,6 +7,7 @@
       <div class="label-container" :style="labelStyle">
         {{ labelTime }}
       </div>
+      <a href="#" @click="$emit('delete')">[Remove]</a>
     </div>
     <div class="zone-range">
       <div v-for="cell in zoneCells" class="zone-cell" @mouseover="onMouseOverCell(cell)"
