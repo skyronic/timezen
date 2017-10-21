@@ -55,7 +55,19 @@ export const getUpcoming = (memberConfig, timezone, userTz) => {
   return response;
 };
 
-export const getSlotInfo = (slot, memberConfig) => {
+export const translateSlot = (slot, targetTz, userTz) => {
+  let userTimestamp = moment().tz(targetTz)
+    .startOf("day")
+    .add(slot * 30, 'minutes')
+    .clone()
+    .tz(userTz)
+
+  let minutes = userTimestamp.hours()*60 + userTimestamp.minutes();
+
+  return Math.floor(minutes / 30);
+};
+
+export const getSlotInfo = (slot, memberConfig, targetTz, userTz) => {
   let response = {};
   if(memberConfig === null) {
     return {
@@ -63,6 +75,7 @@ export const getSlotInfo = (slot, memberConfig) => {
     };
   }
   let { ideal_start, day_start, ideal_end, day_end } = memberConfig;
+  slot = translateSlot(slot, targetTz, userTz);
 
 
   if (slot >= day_end || slot < day_start) {

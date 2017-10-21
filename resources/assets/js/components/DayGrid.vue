@@ -42,7 +42,7 @@
       this.zoneCells = _.map(_.range(0, 48), (v) => {
         let ts = moment().hour(0).minute(0).add(v*30, 'minutes').tz(this.timezone);
 
-        let slotInfo = getSlotInfo(v, this.memberInfo);
+        let slotInfo = getSlotInfo(v, this.memberInfo, this.timezone, this.userTz);
 
         return {
           index: v,
@@ -61,7 +61,7 @@
         setTimeout(() => {
           // in case the mouseout isn't triggered
           this.resetCell()
-        }, 500)
+        }, 5000)
       },
       resetCell () {
         this.setHighlightedCell(getCurrentSlot(this.userTz));
@@ -91,7 +91,8 @@
   }
 
   .highlighted-cell {
-    border-color: #000000;
+    border-color: #000000 !important;
+    border-style: solid;
     border-width: 2px;
   }
 
@@ -108,8 +109,9 @@
     flex: 1;
   }
   .zone-cell{
-    margin-right: 2px;
-    height: 10px;
+    margin-right: 1px;
+    border: 1px solid #fff;
+    height: 14px;
     flex: 1;
   }
 
