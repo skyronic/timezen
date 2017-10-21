@@ -103,3 +103,9 @@ export const getDifference = (userTz, timezone) => {
   return `${diff_hours} hrs ${direction}`;
 
 }
+
+export const getCurrentSlot = (userTz) => {
+  let current = moment.tz(userTz)
+  let minutes = current.hours() * 60 + current.minutes();
+  return Math.floor(minutes / 30)
+}

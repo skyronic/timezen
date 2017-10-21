@@ -15,6 +15,8 @@
     <div class="zone-range">
       <div v-for="cell in zoneCells"
            @mouseover="onMouseOverCell(cell)"
+           @mouseout="resetCell"
+
            :class="[
              'zone-cell',
              cell.className,
@@ -34,7 +36,7 @@
 <script>
   import { mapActions, mapGetters, mapState } from 'vuex'
 
-  import { getDifference, getUpcoming, getSlotInfo } from '../timeutils';
+  import { getDifference, getUpcoming, getSlotInfo, getCurrentSlot } from '../timeutils';
 
   import _ from 'lodash';
   import moment from 'moment-timezone';
@@ -71,6 +73,14 @@
     ]), {
       onMouseOverCell (cell) {
         this.setHighlightedCell(cell.index);
+
+        setTimeout(() => {
+          // in case the mouseout isn't triggered
+          this.resetCell()
+        }, 5000)
+      },
+      resetCell () {
+        this.setHighlightedCell(getCurrentSlot(this.userTz));
       }
     }),
     computed: Object.assign(mapState({
