@@ -25,7 +25,12 @@ export const getUpcoming = (memberConfig, timezone, userTz) => {
   let { ideal_start, day_start, ideal_end, day_end } = memberConfig;
 
   if (elapsedCount >= day_end || elapsedCount < day_start) {
-    let eventTime = timeTo(day_start, timezone, userTz);
+    let target_start = day_start;
+    if(elapsedCount >= day_end) {
+      // ensure that start of day is tomorrow
+      target_start = parseInt(target_start) + 48
+    }
+    let eventTime = timeTo(target_start, timezone, userTz);
     response = {
       message: "Day Start " + eventTime.fromNow()
     }
@@ -82,6 +87,21 @@ export const getSlotInfo = (slot, memberConfig) => {
   return response;
 }
 
+export const getColorCodeForSlot = (slot, memberConfig) => {
+  let { ideal_start, day_start, ideal_end, day_end } = memberConfig;
+
+
+  if (slot >= day_end || slot < day_start) {
+    return 'red';
+  } else if (slot < ideal_start) {
+    return 'orange';
+  } else if (slot < ideal_end) {
+    return 'green';
+  } else if (slot < day_end ) {
+    return 'red'
+  }
+}
+
 export const getDifference = (userTz, timezone) => {
   let localOffset = moment.tz.zone(userTz).offset(moment.now());
   let zoneOffset = moment.tz.zone(timezone).offset(moment.now());
@@ -109,3 +129,13 @@ export const getCurrentSlot = (userTz) => {
   let minutes = current.hours() * 60 + current.minutes();
   return Math.floor(minutes / 30)
 }
+
+// TODO: this is wrong and needs to be fixed
+export const getTimeForSlot = (slot, timezone, userTz) => {
+  let targetTimestamp = moment.tz(timezone)
+  return targetTimestamp.startOf('day')
+    .add(30 * slot, 'minutes')
+    .clone()
+    .tz(userTz)
+    .format('h:mm A');
+};

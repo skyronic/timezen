@@ -1,33 +1,29 @@
 <template>
   <div class="zone-display">
-    <div>
-      {{ name }} - {{ difference }} [{{ timezone }}]
+    <div class="info-block">
+      <div class="info-left">
+        <div class="info-name">
+          {{ name }}
+        </div>
+        <div class="info-upcoming">
+          {{ upcoming.message }}
+        </div>
+      </div>
+      <div class="info-right">
+        <div class="info-tz">
+          {{ difference }} [{{ timezone }}]
+        </div>
+      </div>
     </div>
-    <div v-if="memberInfo">
-      Upcoming: {{ upcoming.message }}
-    </div>
-    <div class="cell-label">
-      <div class="label-container" :style="labelStyle">
+    <div class="cell-block">
+      <div :class="['time-label', 'text-label-' + activeColorCode]">
         {{ labelTime }}
       </div>
-      <a href="#" @click="$emit('delete')">[Remove]</a>
-    </div>
-    <div class="zone-range">
-      <div v-for="cell in zoneCells"
-           @mouseover="onMouseOverCell(cell)"
-           @mouseout="resetCell"
+      <div class="cell-range">
+        <day-grid :timezone="timezone"
+        :user-tz="userTz"
+        :member-info="memberInfo"></day-grid>
 
-           :class="[
-             'zone-cell',
-             cell.className,
-             cell.index === activeCell ? 'highlighted-cell' : ''
-            ]"
-           >
-      </div>
-    </div>
-    <div class="zone-range">
-      <div v-for="label in zoneLabels" class="zone-label">
-        {{ label.time }}
       </div>
     </div>
   </div>
@@ -36,80 +32,39 @@
 <script>
   import { mapActions, mapGetters, mapState } from 'vuex'
 
-  import { getDifference, getUpcoming, getSlotInfo, getCurrentSlot } from '../timeutils';
+  import { getDifference,
+    getUpcoming,
+    getSlotInfo,
+    getTimeForSlot,
+    getColorCodeForSlot,
+    getCurrentSlot } from '../timeutils';
 
   import _ from 'lodash';
   import moment from 'moment-timezone';
+  import DayGrid from './DayGrid.vue'
   export default {
     data () {
       return {
-        zoneCells: [],
-        zoneLabels: []
       }
+    },
+    components: {
+      DayGrid
     },
     mounted () {
-      this.zoneLabels = _.map(_.range(0, 12), (v) => {
-        let ts = moment().hour(v * 2).minute(0);
-        return {
-          time: ts.tz(this.timezone).format("hA")
-        }
-      });
-
-      this.zoneCells = _.map(_.range(0, 48), (v) => {
-        let ts = moment().hour(0).minute(0).add(v*30, 'minutes').tz(this.timezone);
-
-        let slotInfo = getSlotInfo(v, this.memberInfo);
-
-        return {
-          index: v,
-          ts,
-          className: slotInfo.class
-        }
-      })
     },
-    methods: Object.assign(mapActions([
-      'setHighlightedCell'
+    methods: {
 
-    ]), {
-      onMouseOverCell (cell) {
-        this.setHighlightedCell(cell.index);
-
-        setTimeout(() => {
-          // in case the mouseout isn't triggered
-          this.resetCell()
-        }, 5000)
-      },
-      resetCell () {
-        this.setHighlightedCell(getCurrentSlot(this.userTz));
-      }
-    }),
+    },
     computed: Object.assign(mapState({
       activeCell: state => state.zoneui.highlightedCell
     }), {
       labelTime () {
-        let activeCell = this.zoneCells[this.activeCell];
-        if(activeCell && activeCell.ts) {
-          return activeCell.ts.format("h:mm A");
-        }
-        return "";
+        return getTimeForSlot(this.activeCell, this.timezone, this.userTz);
       },
 
-      labelStyle () {
-        if(this.activeCell < 3) {
-          return {
-            marginLeft: ((100 / 46) * this.activeCell) + "%"
-          }
-        }
-        if(this.activeCell > 44) {
-          return {
-            marginLeft: ((100 / 46) * 42) + "%"
-          }
-        }
-        else {
-          return {
-            marginLeft: ((100 / 46) * this.activeCell - 4) + "%"
-          }
-        }
+      activeColorCode () {
+        return getColorCodeForSlot(this.activeCell, this.memberInfo);
+
       },
 
       difference () {
@@ -133,48 +88,96 @@
       userTz: null,
       memberInfo: {
         type: null,
-        default: null
+        default: () => {
+          return {
+            day_start: 16,
+            ideal_start: 20,
+            ideal_end: 32,
+            day_end: 38
+          }
+        }
       }
     }
   };
 </script>
 
-<style lang="css">
+<style lang="scss">
+  $red: #b71c1c;
+  $orange: #FF5722;
+  $green: #1B5E20;
+
+
   .zone-display {
-    border: 1px solid gray;
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+    border-right: 1px solid #eee;
     width: 100%;
-    margin-bottom: 15px;
-    padding: 10px;
+    border-left: 3px solid $red;
+    height: 110px;
+    padding: 5px 10px;
   }
 
-  .zone-label{
-    flex: 1;
+  .zone-border-red {
+    border-left: 3px solid $red;
   }
-  .zone-cell{
-    margin-right: 2px;
-    height: 15px;
-    border: 1px solid #eee;
-    flex: 1;
+  .zone-border-orange{
+    border-left: 3px solid $orange;
+  }
+  .zone-border-green {
+    border-left: 3px solid $green;
   }
 
-  .zone-range {
+  .text-label-red {
+    color: $red;
+  }
+  .text-label-orange {
+    color: $orange;
+  }
+  .text-label-green {
+    color: $green;
+  }
+
+  .info-block {
     display: flex;
-    margin-top: 3px;
   }
 
-  .highlighted-cell {
-    border-color: #000000;
-    border-width: 2px;
+  .info-left {
+    flex: 1;
+  }
+  .info-right {
+
   }
 
-  .cell-not-available {
-    background-color: red;
+  .info-name {
+    font-size: 20px;
+    line-height: 22px;
+    margin-top: 5px;
+    color: #333;
   }
-  .cell-not-ideal{
-    background-color: orange;
+
+  .info-upcoming {
+    color: #555;
   }
-  .cell-ideal{
-    background-color: green;
+
+  .info-tz {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #aaa;
+  }
+
+
+  .cell-block {
+    display: flex;
+    margin-top: 5px;
+  }
+
+  .time-label {
+    width: 100px;
+    font-size: 18px;
+  }
+
+  .cell-range {
+    width: 100%;
   }
 
 </style>
