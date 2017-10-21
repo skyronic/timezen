@@ -3,6 +3,9 @@
     <div>
       {{ name }} - {{ difference }} [{{ timezone }}]
     </div>
+    <div v-if="memberInfo">
+      Upcoming: {{ upcoming.message }}
+    </div>
     <div class="cell-label">
       <div class="label-container" :style="labelStyle">
         {{ labelTime }}
@@ -24,6 +27,9 @@
 
 <script>
   import { mapActions, mapGetters, mapState } from 'vuex'
+
+  import { getDifference, getUpcoming } from '../timeutils';
+
   import _ from 'lodash';
   import moment from 'moment-timezone';
   export default {
@@ -89,41 +95,38 @@
       },
 
       difference () {
-        let localOffset = moment.tz.zone(this.userTz).offset(moment.now());
-        let zoneOffset = moment.tz.zone(this.timezone).offset(moment.now());
+        return getDifference(this.userTz, this.timezone)
+      },
 
-        if(zoneOffset === localOffset) {
-          return "No difference";
+      upcoming () {
+        if(this.memberInfo) {
+          return getUpcoming(this.memberInfo, this.timezone, this.userTz)
         }
-
-        let direction = "ahead";
-        let diff_minutes = localOffset - zoneOffset;
-        if (zoneOffset > localOffset) {
-          direction = "behind";
-          diff_minutes = zoneOffset - localOffset;
+        else {
+          return {
+            message: "Unknown..."
+          }
         }
-
-        diff_minutes = Math.abs(diff_minutes);
-        let diff_hours = Math.round(diff_minutes / 60)
-
-        return `${diff_hours} hrs ${direction}`;
       }
     }),
-    props: [
-      'name',
-      'timezone',
-      'userTz'
-    ]
+    props: {
+      'name': String,
+      timezone: null,
+      userTz: null,
+      memberInfo: {
+        type: null,
+        default: null
+      }
+    }
   };
 </script>
 
 <style lang="css">
   .zone-display {
     border: 1px solid gray;
-    height: 100px;
     width: 100%;
     margin-bottom: 15px;
-    padding: 5px;
+    padding: 10px;
   }
 
   .zone-label{

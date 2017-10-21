@@ -4,7 +4,11 @@
       <zone-display name="You!" :timezone="userTz" :user-tz="userTz"></zone-display>
     </div>
     <div v-for="member in starred">
-      <zone-display :name="member.name" :timezone="member.timezone" :user-tz="userTz" @delete="removeMember(member)"></zone-display>
+      <zone-display :name="member.name"
+                    :timezone="member.timezone"
+                    :user-tz="userTz"
+                    :memberInfo="member"
+                    @delete="removeMember(member)"></zone-display>
     </div>
     <div v-for="item in customList">
       <zone-display :name="item.name" :timezone="item.timezone" :user-tz="userTz" @delete="removeCustom(item)"></zone-display>
