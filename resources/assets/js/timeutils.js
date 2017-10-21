@@ -24,7 +24,7 @@ export const getUpcoming = (memberConfig, timezone, userTz) => {
   let response = {};
   let { ideal_start, day_start, ideal_end, day_end } = memberConfig;
 
-  if (elapsedCount >= day_end && elapsedCount < day_start) {
+  if (elapsedCount >= day_end || elapsedCount < day_start) {
     let eventTime = timeTo(day_start, timezone, userTz);
     response = {
       message: "Day Start " + eventTime.fromNow()
@@ -49,6 +49,38 @@ export const getUpcoming = (memberConfig, timezone, userTz) => {
 
   return response;
 };
+
+export const getSlotInfo = (slot, memberConfig) => {
+  let response = {};
+  if(memberConfig === null) {
+    return {
+      color: 'white'
+    };
+  }
+  let { ideal_start, day_start, ideal_end, day_end } = memberConfig;
+
+
+  if (slot >= day_end || slot < day_start) {
+    response = {
+      class: "cell-not-available"
+    }
+  } else if (slot < ideal_start) {
+    response = {
+      class: "cell-not-ideal"
+    }
+
+  } else if (slot < ideal_end) {
+    response = {
+      class: "cell-ideal"
+    }
+  } else if (slot < day_end ) {
+    response = {
+      class: "cell-not-ideal"
+    }
+  }
+
+  return response;
+}
 
 export const getDifference = (userTz, timezone) => {
   let localOffset = moment.tz.zone(userTz).offset(moment.now());
