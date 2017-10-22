@@ -7,7 +7,6 @@
       <zone-display :name="member.name"
                     :timezone="member.timezone"
                     :user-tz="userTz"
-                    :memberInfo="member"
                     @delete="removeMember(member)"></zone-display>
     </div>
     <div v-for="item in customList">

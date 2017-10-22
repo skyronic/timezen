@@ -63,7 +63,7 @@
       },
 
       activeColorCode () {
-        return getColorCodeForSlot(this.activeCell, this.memberInfo);
+        return getColorCodeForSlot(this.activeCell, this.memberInfo, this.timezone, this.userTz);
 
       },
 

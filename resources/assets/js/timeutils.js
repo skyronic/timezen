@@ -56,11 +56,11 @@ export const getUpcoming = (memberConfig, timezone, userTz) => {
 };
 
 export const translateSlot = (slot, targetTz, userTz) => {
-  let userTimestamp = moment().tz(targetTz)
+  let userTimestamp = moment().tz(userTz)
     .startOf("day")
     .add(slot * 30, 'minutes')
     .clone()
-    .tz(userTz)
+    .tz(targetTz)
 
   let minutes = userTimestamp.hours()*60 + userTimestamp.minutes();
 
@@ -100,8 +100,9 @@ export const getSlotInfo = (slot, memberConfig, targetTz, userTz) => {
   return response;
 }
 
-export const getColorCodeForSlot = (slot, memberConfig) => {
+export const getColorCodeForSlot = (slot, memberConfig, targetTz, userTz) => {
   let { ideal_start, day_start, ideal_end, day_end } = memberConfig;
+  slot = translateSlot(slot, targetTz, userTz);
 
 
   if (slot >= day_end || slot < day_start) {
@@ -111,7 +112,7 @@ export const getColorCodeForSlot = (slot, memberConfig) => {
   } else if (slot < ideal_end) {
     return 'green';
   } else if (slot < day_end ) {
-    return 'red'
+    return 'orange'
   }
 }
 
@@ -131,9 +132,11 @@ export const getDifference = (userTz, timezone) => {
   }
 
   diff_minutes = Math.abs(diff_minutes);
-  let diff_hours = Math.round(diff_minutes / 60)
+  let diff_hours = Math.floor(diff_minutes / 60)
+  let diff_mins = Math.round(diff_minutes % 60)
+  let mins_text = diff_mins ? `${diff_mins} mins` : ''
 
-  return `${diff_hours} hrs ${direction}`;
+  return `${diff_hours} hrs ${mins_text} ${direction}`;
 
 }
 
@@ -145,10 +148,10 @@ export const getCurrentSlot = (userTz) => {
 
 // TODO: this is wrong and needs to be fixed
 export const getTimeForSlot = (slot, timezone, userTz) => {
-  let targetTimestamp = moment.tz(timezone)
+  let targetTimestamp = moment().tz(userTz)
   return targetTimestamp.startOf('day')
-    .add(30 * slot, 'minutes')
     .clone()
-    .tz(userTz)
+    .tz(timezone)
+    .add(30 * slot, 'minutes')
     .format('h:mm A');
 };

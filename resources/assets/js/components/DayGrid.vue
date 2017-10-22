@@ -32,21 +32,23 @@
       }
     },
     mounted () {
+      // TODO: Zone Labels are a little offset
       this.zoneLabels = _.map(_.range(0, 12), (v) => {
-        let ts = moment().hour(v * 2).minute(0);
+        let ts = moment.tz(this.userTz)
+          .startOf('day')
+          .add(v * 2, 'hours')
+          .clone()
+          .tz(this.timezone);
+
         return {
-          time: ts.tz(this.timezone).format("hA")
+          time: ts.format("hA")
         }
       });
 
       this.zoneCells = _.map(_.range(0, 48), (v) => {
-        let ts = moment().hour(0).minute(0).add(v*30, 'minutes').tz(this.timezone);
-
         let slotInfo = getSlotInfo(v, this.memberInfo, this.timezone, this.userTz);
-
         return {
           index: v,
-          ts,
           className: slotInfo.class
         }
       })
@@ -60,8 +62,8 @@
 
         setTimeout(() => {
           // in case the mouseout isn't triggered
-          this.resetCell()
-        }, 5000)
+//          this.resetCell()
+        }, 6000)
       },
       resetCell () {
         this.setHighlightedCell(getCurrentSlot(this.userTz));
