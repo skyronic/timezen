@@ -15,10 +15,10 @@ class CreateStarsTable extends Migration
     {
         Schema::create('stars', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('target_id');
+            $table->integer('target_id')->unsigned();
             $table->foreign('target_id')->references('id')->on('users');
 
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

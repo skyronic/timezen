@@ -15,10 +15,10 @@ class CreateTeamUserPivot extends Migration
     {
         Schema::create('team_user', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('team_id');
+            $table->integer('team_id')->unsigned();
             $table->foreign('team_id')->references('id')->on('teams');
 
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
