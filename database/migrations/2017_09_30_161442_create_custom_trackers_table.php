@@ -21,7 +21,7 @@ class CreateCustomTrackersTable extends Migration
             $table->integer('ideal_start')->default('20');
             $table->integer('ideal_end')->default('34');
             $table->integer('day_end')->default('36');
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
