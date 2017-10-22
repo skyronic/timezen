@@ -14,6 +14,12 @@
             @else
               @can('view', $team)
                 You are already a member of this team
+              @else
+                Ready to join this team?
+                <form method="post" action="{{ action('TeamController@doJoin', $team->join_token) }}">
+                  {{ csrf_field() }}
+                  <button type="submit" class="btn btn-primary">Join {{ $team->name }}</button>
+                </form>
               @endcan
             @endguest
           </div>

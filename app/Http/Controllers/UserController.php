@@ -79,9 +79,9 @@ class UserController extends Controller
 
         $form->redirectIfNotValid();
 
-        \Session::flash('success', "Profile Saved!");
+        \Session::flash('status', "Profile Saved!");
 
-        return redirect()->action("UserController@profilePage");
+        return redirect()->action("HomeController@index");
 
     }
 

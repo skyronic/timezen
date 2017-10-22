@@ -79,6 +79,17 @@ class TeamController extends Controller
         ]);
     }
 
+    public function doJoin ($token) {
+        $team = Team::whereJoinToken($token)
+            ->firstOrFail();
+
+        $team->addUser(\Auth::user());
+
+        \Session::flash('status', "You are now a part of {$team->name}");
+
+        return redirect()->route('team_view', $team);
+    }
+
     public function addTeam (Request $request) {
         $form = $this->form(AddTeamForm::class);
 

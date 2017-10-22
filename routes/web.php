@@ -36,6 +36,7 @@ Route::middleware(['check_profile', 'auth'])->group(function () {
     Route::get('/user/starred', 'UserController@starred');
     Route::get('/user/starred_users', 'UserController@allUsers');
     Route::post('/user/toggle/{target}', 'UserController@toggleStar');
+    Route::post('/team/join/{token}', 'TeamController@doJoin');
 });
 
 Route::get('/team/join/{token}', 'TeamController@joinPage')->name('join_team');
