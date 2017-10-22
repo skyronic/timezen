@@ -56,7 +56,7 @@
     },
     mounted () {
       this.updateTime();
-      setTimeout(() => {
+      setInterval(() => {
         this.updateTime();
       }, 2000)
     },

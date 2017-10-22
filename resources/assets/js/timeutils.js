@@ -146,7 +146,7 @@ export const getDifference = (userTz, timezone) => {
 
 }
 
-export const getCurrentSlot = (userTz) => {
+export const getCurrentSlot = () => {
   let current = moment()
   let minutes = current.hours() * 60 + current.minutes();
   return Math.floor(minutes / 30)

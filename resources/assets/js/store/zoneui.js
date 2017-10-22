@@ -3,7 +3,7 @@ import { getCurrentSlot } from '../timeutils';
 
 const state = {
   // Example:
-  highlightedCell: 0,
+  highlightedCell: getCurrentSlot(),
   highlightActive: false
 };
 
