@@ -54,19 +54,14 @@
       })
     },
     methods: Object.assign(mapActions([
-      'setHighlightedCell'
+      'setHighlightedCell',
+      'resetHighlight'
 
     ]), {
       onMouseOverCell (cell) {
         this.setHighlightedCell(cell.index);
 
-        setTimeout(() => {
-          // in case the mouseout isn't triggered
-//          this.resetCell()
-        }, 6000)
-      },
-      resetCell () {
-        this.setHighlightedCell(getCurrentSlot(this.userTz));
+        this.resetHighlight(this.userTz)
       }
     }),
     computed: Object.assign(mapState({

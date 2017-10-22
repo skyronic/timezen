@@ -1,5 +1,5 @@
 <template>
-  <div class="zone-display">
+  <div :class="['zone-display', 'zone-border-' + zoneColor]">
     <div class="info-block">
       <div class="info-left">
         <div class="info-name">
@@ -32,11 +32,13 @@
 <script>
   import { mapActions, mapGetters, mapState } from 'vuex'
 
+
   import { getDifference,
     getUpcoming,
     getSlotInfo,
     getTimeForSlot,
     getColorCodeForSlot,
+    getCurrentTimeForZone,
     getCurrentSlot } from '../timeutils';
 
   import _ from 'lodash';
@@ -45,26 +47,43 @@
   export default {
     data () {
       return {
+        timeLabel: '',
+        zoneColor: 'red'
       }
     },
     components: {
       DayGrid
     },
     mounted () {
+      this.updateTime();
+      setTimeout(() => {
+        this.updateTime();
+      }, 2000)
     },
     methods: {
+      updateTime () {
+        this.timeLabel = getCurrentTimeForZone(this.timezone, this.userTz).format('h:mm A')
 
+        let currentSlot = getCurrentSlot(this.userTz)
+        this.zoneColor = getColorCodeForSlot(currentSlot, this.memberInfo, this.timezone, this.userTz)
+
+      }
     },
     computed: Object.assign(mapState({
-      activeCell: state => state.zoneui.highlightedCell
+      activeCell: state => state.zoneui.highlightedCell,
+      activeFlag: state => state.zoneui.highlightActive
     }), {
       labelTime () {
-        return getTimeForSlot(this.activeCell, this.timezone, this.userTz);
+        if(this.activeFlag) {
+          return getTimeForSlot(this.activeCell, this.timezone, this.userTz);
+        }
+        else {
+          return this.timeLabel
+        }
       },
 
       activeColorCode () {
         return getColorCodeForSlot(this.activeCell, this.memberInfo, this.timezone, this.userTz);
-
       },
 
       difference () {
@@ -112,7 +131,6 @@
     border-top: 1px solid #eee;
     border-right: 1px solid #eee;
     width: 100%;
-    border-left: 3px solid $red;
     height: 110px;
     padding: 5px 10px;
   }

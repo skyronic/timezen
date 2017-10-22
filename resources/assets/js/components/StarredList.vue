@@ -18,6 +18,7 @@
 <script>
   import ZoneDisplay from './ZoneDisplay.vue';
   import moment from 'moment-timezone';
+  import { mapActions, mapGetters, mapState } from 'vuex'
 
   export default {
     components: {
@@ -27,11 +28,11 @@
       return {
         starred: [],
         customList: [],
-        userTz: "UTC"
+        userTz: moment.tz.guess()
       }
     },
     mounted () {
-      this.userTz = moment.tz.guess();
+      this.resetHighlight(this.userTz)
 
       axios.get(`/user/starred_users`)
         .then((response) => {
@@ -42,7 +43,9 @@
           this.customList = response.data;
         })
     },
-    methods: {
+    methods: Object.assign(mapActions([
+      'resetHighlight'
+    ]), {
       removeMember(member) {
         axios.post(`/user/remove_starred/${member.id}`)
           .then((response) => {
@@ -55,7 +58,7 @@
             this.customList= this.customList.filter(x => x.id !== custom.id);
           })
       }
-    },
+    }),
     props: [
 
     ]

@@ -55,6 +55,12 @@ export const getUpcoming = (memberConfig, timezone, userTz) => {
   return response;
 };
 
+export const getCurrentTimeForZone = (targetTz, userTz) => {
+  return moment.tz(userTz)
+    .clone()
+    .tz(targetTz);
+}
+
 export const translateSlot = (slot, targetTz, userTz) => {
   let userTimestamp = moment().tz(userTz)
     .startOf("day")
@@ -141,7 +147,7 @@ export const getDifference = (userTz, timezone) => {
 }
 
 export const getCurrentSlot = (userTz) => {
-  let current = moment.tz(userTz)
+  let current = moment()
   let minutes = current.hours() * 60 + current.minutes();
   return Math.floor(minutes / 30)
 }
