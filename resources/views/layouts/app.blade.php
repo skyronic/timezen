@@ -28,7 +28,7 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="{{ url('/home') }}">
                         {{ config('app.name', 'Laravel') }}
                     </a>
                 </div>
@@ -36,9 +36,11 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
+                      @auth
                       <li><a href="{{ route('add_team') }}">Add Team</a></li>
                       <li><a href="{{ route('profile_page') }}">Profile</a></li>
                         &nbsp;
+                      @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->

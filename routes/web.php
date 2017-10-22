@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::middleware(['check_profile'])->group(function () {
+Route::middleware(['check_profile', 'auth'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/team/add', 'TeamController@addTeamPage')->name('add_team');
     Route::post('/team/add', 'TeamController@addTeam');
@@ -37,6 +37,8 @@ Route::middleware(['check_profile'])->group(function () {
     Route::get('/user/starred_users', 'UserController@allUsers');
     Route::post('/user/toggle/{target}', 'UserController@toggleStar');
 });
+
+Route::get('/team/join/{token}', 'TeamController@joinPage')->name('join_team');
 
 Route::get('/user/profile', 'UserController@profilePage')->name('profile_page');
 Route::post('/user/profile', 'UserController@updateProfile');

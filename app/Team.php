@@ -20,6 +20,10 @@ class Team extends Model
         $this->admins()->attach($user);
     }
 
+    public function inviteLink () {
+        return url()->route('join_team', $this->join_token);
+    }
+
     /**
      * @param $user User
      */

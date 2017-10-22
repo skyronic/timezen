@@ -70,6 +70,15 @@ class TeamController extends Controller
         ]);
     }
 
+    public function joinPage($token) {
+        $team = Team::whereJoinToken($token)
+            ->firstOrFail();
+
+        return view('team.join', [
+            'team' => $team
+        ]);
+    }
+
     public function addTeam (Request $request) {
         $form = $this->form(AddTeamForm::class);
 
